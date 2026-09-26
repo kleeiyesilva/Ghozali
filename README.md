@@ -55,3 +55,4 @@ src/
 
 Font: **Fraunces** (judul, serif) + **IBM Plex Sans** (isi).
 "# Ghozali" 
+"# Ghozali" 
