@@ -1,0 +1,101 @@
+import { useState, type FormEvent } from "react";
+
+// GANTI dengan endpoint Formspree kamu sendiri.
+// Cara dapatnya: daftar gratis di https://formspree.io pakai email kamu,
+// buat "New Form", nanti dikasih URL kayak "https://formspree.io/f/xxxxxxx".
+// Tempel URL itu di bawah ini, ganti tulisan "GANTI_DENGAN_ID_FORMSPREE_KAMU".
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/GANTI_DENGAN_ID_FORMSPREE_KAMU";
+
+type Status = "idle" | "sending" | "success" | "error";
+
+export default function ContactForm() {
+  const [status, setStatus] = useState<Status>("idle");
+
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setStatus("sending");
+    const form = e.currentTarget;
+    const data = new FormData(form);
+
+    try {
+      const res = await fetch(FORMSPREE_ENDPOINT, {
+        method: "POST",
+        body: data,
+        headers: { Accept: "application/json" },
+      });
+      if (res.ok) {
+        setStatus("success");
+        form.reset();
+      } else {
+        setStatus("error");
+      }
+    } catch {
+      setStatus("error");
+    }
+  }
+
+  if (status === "success") {
+    return (
+      <div className="panel p-6">
+        <p className="font-display text-lg font-semibold text-paper">Pesan terkirim!</p>
+        <p className="mt-2 font-body text-sm text-paper-dim">
+          Terima kasih sudah menghubungi, saya akan balas secepatnya.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+      <div>
+        <label htmlFor="name" className="block font-body text-xs uppercase tracking-[0.1em] text-paper-dim">
+          Nama
+        </label>
+        <input
+          id="name"
+          name="name"
+          type="text"
+          required
+          className="mt-2 w-full border-b border-line bg-transparent py-2 font-body text-sm text-paper outline-none transition-colors focus:border-accent"
+          placeholder="Nama kamu"
+        />
+      </div>
+      <div>
+        <label htmlFor="email" className="block font-body text-xs uppercase tracking-[0.1em] text-paper-dim">
+          Email
+        </label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          required
+          className="mt-2 w-full border-b border-line bg-transparent py-2 font-body text-sm text-paper outline-none transition-colors focus:border-accent"
+          placeholder="email@kamu.com"
+        />
+      </div>
+      <div>
+        <label htmlFor="message" className="block font-body text-xs uppercase tracking-[0.1em] text-paper-dim">
+          Pesan
+        </label>
+        <textarea
+          id="message"
+          name="message"
+          required
+          rows={4}
+          className="mt-2 w-full resize-none border-b border-line bg-transparent py-2 font-body text-sm text-paper outline-none transition-colors focus:border-accent"
+          placeholder="Tulis pesan kamu di sini..."
+        />
+      </div>
+
+      <button type="submit" disabled={status === "sending"} className="btn-primary w-fit disabled:opacity-60">
+        {status === "sending" ? "Mengirim..." : "Kirim pesan"}
+      </button>
+
+      {status === "error" && (
+        <p className="font-body text-sm text-accent">
+          Gagal mengirim. Pastikan endpoint Formspree sudah diisi dengan benar, lalu coba lagi.
+        </p>
+      )}
+    </form>
+  );
+}
