@@ -1,9 +1,7 @@
 import { useState, type FormEvent } from "react";
+import { Send } from "lucide-react";
 
 // GANTI dengan endpoint Formspree kamu sendiri.
-// Cara dapatnya: daftar gratis di https://formspree.io pakai email kamu,
-// buat "New Form", nanti dikasih URL kayak "https://formspree.io/f/xxxxxxx".
-// Tempel URL itu di bawah ini, ganti tulisan "GANTI_DENGAN_ID_FORMSPREE_KAMU".
 const FORMSPREE_ENDPOINT = "https://formspree.io/f/GANTI_DENGAN_ID_FORMSPREE_KAMU";
 
 type Status = "idle" | "sending" | "success" | "error";
@@ -36,9 +34,9 @@ export default function ContactForm() {
 
   if (status === "success") {
     return (
-      <div className="panel p-6">
+      <div className="flex h-full flex-col items-center justify-center gap-2 py-8 text-center">
         <p className="font-display text-lg font-semibold text-paper">Pesan terkirim!</p>
-        <p className="mt-2 font-body text-sm text-paper-dim">
+        <p className="font-body text-sm text-paper-dim">
           Terima kasih sudah menghubungi, saya akan balas secepatnya.
         </p>
       </div>
@@ -46,9 +44,9 @@ export default function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       <div>
-        <label htmlFor="name" className="block font-body text-xs uppercase tracking-[0.1em] text-paper-dim">
+        <label htmlFor="name" className="mb-1.5 block font-body text-xs uppercase tracking-[0.1em] text-paper-dim">
           Nama
         </label>
         <input
@@ -56,12 +54,12 @@ export default function ContactForm() {
           name="name"
           type="text"
           required
-          className="mt-2 w-full border-b border-line bg-transparent py-2 font-body text-sm text-paper outline-none transition-colors focus:border-accent"
+          className="w-full rounded-xl border border-line bg-ink px-4 py-3 font-body text-sm text-paper outline-none transition-colors focus:border-accent"
           placeholder="Nama kamu"
         />
       </div>
       <div>
-        <label htmlFor="email" className="block font-body text-xs uppercase tracking-[0.1em] text-paper-dim">
+        <label htmlFor="email" className="mb-1.5 block font-body text-xs uppercase tracking-[0.1em] text-paper-dim">
           Email
         </label>
         <input
@@ -69,12 +67,12 @@ export default function ContactForm() {
           name="email"
           type="email"
           required
-          className="mt-2 w-full border-b border-line bg-transparent py-2 font-body text-sm text-paper outline-none transition-colors focus:border-accent"
+          className="w-full rounded-xl border border-line bg-ink px-4 py-3 font-body text-sm text-paper outline-none transition-colors focus:border-accent"
           placeholder="email@kamu.com"
         />
       </div>
       <div>
-        <label htmlFor="message" className="block font-body text-xs uppercase tracking-[0.1em] text-paper-dim">
+        <label htmlFor="message" className="mb-1.5 block font-body text-xs uppercase tracking-[0.1em] text-paper-dim">
           Pesan
         </label>
         <textarea
@@ -82,13 +80,18 @@ export default function ContactForm() {
           name="message"
           required
           rows={4}
-          className="mt-2 w-full resize-none border-b border-line bg-transparent py-2 font-body text-sm text-paper outline-none transition-colors focus:border-accent"
+          className="w-full resize-none rounded-xl border border-line bg-ink px-4 py-3 font-body text-sm text-paper outline-none transition-colors focus:border-accent"
           placeholder="Tulis pesan kamu di sini..."
         />
       </div>
 
-      <button type="submit" disabled={status === "sending"} className="btn-primary w-fit disabled:opacity-60">
+      <button
+        type="submit"
+        disabled={status === "sending"}
+        className="btn-primary mt-1 w-fit disabled:opacity-60"
+      >
         {status === "sending" ? "Mengirim..." : "Kirim pesan"}
+        <Send size={15} />
       </button>
 
       {status === "error" && (
