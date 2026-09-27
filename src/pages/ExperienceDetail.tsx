@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams, Navigate } from "react-router-dom";
-import { experiences, type Day } from "../data/portfolio";
+import { experiences, type Experience } from "../data/portfolio";
 import { useInView } from "../hooks/useInView";
 
 function ImageGallery({ images, alt }: { images: string[]; alt: string }) {
@@ -48,6 +48,8 @@ function FallbackGallery({ images, alt }: { images: string[]; alt: string }) {
     </div>
   );
 }
+
+type Day = NonNullable<Experience["days"]>[number];
 
 function DaySection({ day, index }: { day: Day; index: number }) {
   const { ref, inView } = useInView<HTMLDivElement>(0.08);
