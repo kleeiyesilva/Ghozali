@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams, Navigate } from "react-router-dom";
-import { experiences, type Experience } from "../data/portfolio";
+import { experiences, type Day } from "../data/portfolio";
 import { useInView } from "../hooks/useInView";
 
 function ImageGallery({ images, alt }: { images: string[]; alt: string }) {
@@ -69,7 +69,7 @@ function DaySection({ day, index }: { day: Day; index: number }) {
 
       {day.images.length > 0 && (
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
-          {day.images.map((src, j) => (
+          {day.images.map((src: string, j: number) => (
             <img
               key={j}
               src={src}
