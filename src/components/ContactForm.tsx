@@ -6,6 +6,25 @@ const FORMSPREE_ENDPOINT = "https://formspree.io/f/GANTI_DENGAN_ID_FORMSPREE_KAM
 
 type Status = "idle" | "sending" | "success" | "error";
 
+function fireConfetti() {
+  const colors = ["#ff5a36", "#e04322", "#1a1816", "#faf7f2"];
+  const count = 26;
+
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement("span");
+    el.className = "confetti-piece";
+    el.style.backgroundColor = colors[i % colors.length];
+
+    const angle = (Math.PI * 2 * i) / count + Math.random() * 0.4;
+    const distance = 70 + Math.random() * 70;
+    el.style.setProperty("--dx", `${Math.cos(angle) * distance}px`);
+    el.style.setProperty("--dy", `${Math.sin(angle) * distance}px`);
+
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 900);
+  }
+}
+
 export default function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
 
@@ -23,6 +42,7 @@ export default function ContactForm() {
       });
       if (res.ok) {
         setStatus("success");
+        fireConfetti();
         form.reset();
       } else {
         setStatus("error");

@@ -111,13 +111,14 @@ a {
   font-family: var(--font-body);
   font-weight: 600;
   font-size: 0.9rem;
-  transition: background-color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+  transition: background-color 0.25s ease, border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .btn-primary:hover {
   background-color: var(--color-accent-soft);
   border-color: var(--color-accent-soft);
   transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(255, 90, 54, 0.35);
 }
 
 .btn-secondary {
@@ -130,12 +131,13 @@ a {
   font-family: var(--font-body);
   font-weight: 600;
   font-size: 0.9rem;
-  transition: border-color 0.25s ease, background-color 0.25s ease;
+  transition: border-color 0.25s ease, background-color 0.25s ease, transform 0.25s ease;
 }
 
 .btn-secondary:hover {
   border-color: var(--color-paper-dim);
   background-color: rgba(26, 24, 22, 0.03);
+  transform: translateY(-2px);
 }
 
 .panel {
@@ -179,4 +181,79 @@ a {
 .draw-path {
   stroke-dasharray: 400;
   animation: draw-path 1.6s cubic-bezier(0.65, 0, 0.35, 1) 0.3s both;
+}
+
+.photo-tilt {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+}
+.photo-tilt:hover {
+  transform: rotate(-1deg) scale(1.02);
+}
+
+/* ---------- custom cursor ---------- */
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  border-radius: 9999px;
+  will-change: transform;
+}
+
+.cursor-dot {
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  background-color: var(--color-accent);
+}
+
+.cursor-ring {
+  width: 32px;
+  height: 32px;
+  margin: -16px 0 0 -16px;
+  border: 1px solid var(--color-accent);
+  opacity: 0.5;
+  transition: width 0.25s ease, height 0.25s ease, margin 0.25s ease, opacity 0.25s ease,
+    background-color 0.25s ease;
+}
+
+.cursor-ring-active {
+  width: 52px;
+  height: 52px;
+  margin: -26px 0 0 -26px;
+  background-color: rgba(255, 90, 54, 0.08);
+  opacity: 1;
+}
+
+@media (pointer: coarse) {
+  .cursor-dot,
+  .cursor-ring {
+    display: none;
+  }
+}
+
+/* ---------- confetti ---------- */
+.confetti-piece {
+  position: fixed;
+  left: 50%;
+  top: 45%;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 9999;
+  animation: confetti-burst 0.9s ease-out forwards;
+}
+
+@keyframes confetti-burst {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0.4) rotate(180deg);
+    opacity: 0;
+  }
 }
